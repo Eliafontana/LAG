@@ -54,7 +54,8 @@ def _get_prepare_config(parser: argparse.ArgumentParser):
             [for wandb usage], to specify user's name for simply collecting training data.
     """
     group = parser.add_argument_group("Prepare parameters")
-    group.add_argument("--env-name", type=str, default='JSBSim',
+    # ADDED
+    group.add_argument("--env-name", type=str, default='SingleControl', #JSBSim
                        help="specify the name of environment")
     group.add_argument("--algorithm-name", type=str, default='ppo', choices=["ppo", "mappo"],
                        help="Specifiy the algorithm (default ppo)")
@@ -66,7 +67,8 @@ def _get_prepare_config(parser: argparse.ArgumentParser):
                        help="By default False, will use CPU to train; or else will use GPU;")
     group.add_argument("--n-training-threads", type=int, default=1,
                        help="Number of torch threads for training (default 1)")
-    group.add_argument("--n-rollout-threads", type=int, default=4,
+    # ADDED
+    group.add_argument("--n-rollout-threads", type=int, default=1, # default=4
                        help="Number of parallel envs for training/evaluating rollout (default 4)")
     group.add_argument("--num-env-steps", type=float, default=1e7,
                        help='Number of environment steps to train (default: 1e7)')

@@ -3,7 +3,7 @@ import math
 from enum import Enum
 from collections import namedtuple
 from numpy.linalg import norm
-from gymnasium.spaces import Box, Discrete
+from gym.spaces import Box, Discrete
 from ..utils.utils import in_range_deg
 
 """
@@ -549,8 +549,15 @@ class MixedCatalog(dict):
         Args:
             jsbsim_props (list): list of 'name_jsbsim (access)' of jsbsim properties
         """
-        jsbsim_props_tmp=jsbsim_props.split("\n")
-        for jsbsim_prop in jsbsim_props_tmp:
+        # OLD
+        # jsbsim_props_tmp=jsbsim_props.split("\n")
+
+        # ADDED
+        assert isinstance(jsbsim_props,list), f"The value is supposed to be a list, but it is a {type(jsbsim_props)}"
+
+        # OLD
+        # for jsbsim_prop in jsbsim_props_tmp:
+        for jsbsim_prop in jsbsim_props:
             if jsbsim_prop.strip() == "":
                 continue  # skip empty line
             [name_jsbsim, access] = jsbsim_prop.split(" ")

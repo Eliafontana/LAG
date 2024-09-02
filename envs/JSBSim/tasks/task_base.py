@@ -1,5 +1,5 @@
 import numpy as np
-from gymnasium import spaces
+from gym import spaces
 from typing import List, Tuple
 from abc import ABC, abstractmethod
 from ..core.catalog import Catalog as c

@@ -1,4 +1,4 @@
-import gymnasium as gym
+import gym as gym
 import torch
 import torch.nn as nn
 

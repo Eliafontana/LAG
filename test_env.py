@@ -6,9 +6,13 @@ import logging
 import time
 logging.basicConfig(level=logging.DEBUG)
 
+def unpack_tuple(t):
+    return np.append(t[0],t[1])
+
 def test_env():
     parallel_num = 1
     envs = DummyVecEnv([lambda: SingleCombatEnv("1v1/NoWeapon/HierarchySelfplay") for _ in range(parallel_num)])
+    # envs = DummyVecEnv([lambda: SingleCombatEnv("1v1/ShootMissile/HierarchySelfplay") for _ in range(parallel_num)])
 
     envs.reset()
     # DataType test
@@ -25,6 +29,7 @@ def test_env():
     step = 0
     while True:
         actions = np.array([[envs.action_space.sample() for _ in range(envs.num_agents)] for _ in range(parallel_num)])
+        # actions = np.array([[unpack_tuple(envs.action_space.sample()) for _ in range(envs.num_agents)] for _ in range(parallel_num)])
         obss, rewards, dones, infos = envs.step(actions)
         bloods = [envs.envs[0].agents[agent_id].bloods for agent_id in envs.envs[0].agents.keys()]
         print(f"step:{step}, bloods:{bloods}")
@@ -67,4 +72,5 @@ def test_multi_env():
 
     envs.close()
 
-test_multi_env()
+# test_multi_env()
+test_env()

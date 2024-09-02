@@ -1,5 +1,5 @@
 import numpy as np
-from gymnasium import spaces
+from gym import spaces
 from typing import Tuple
 import torch
 

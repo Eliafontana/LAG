@@ -18,7 +18,8 @@ class BaselineAgent(ABC):
     def __init__(self, agent_id) -> None:
         self.model_path = get_root_dir() + '/model/baseline_model.pt'
         self.actor = BaselineActor()
-        self.actor.load_state_dict(torch.load(self.model_path))
+        # ADDED  map_location=torch.device('cpu')
+        self.actor.load_state_dict(torch.load(self.model_path, map_location=torch.device('cpu')))
         self.actor.eval()
         self.agent_id = agent_id
         self.state_var = [
@@ -62,7 +63,7 @@ class BaselineAgent(ABC):
         return norm_obs
 
     def get_action(self, env, task):
-        delta_value = self.set_delta_value(env, task)
+        delta_value = self.set_delta_value(env, task) # [delta_altitude, delta_heading, delta_velocity]
         observation = self.get_observation(env, task, delta_value)
         _action, self.rnn_states = self.actor(observation, self.rnn_states)
         action = _action.detach().cpu().numpy().squeeze()

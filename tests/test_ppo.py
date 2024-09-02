@@ -2,7 +2,7 @@ import os
 import sys
 from itertools import product
 
-import gymnasium as gym
+import gym as gym
 import numpy as np
 import pytest
 import torch

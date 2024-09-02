@@ -1,5 +1,5 @@
-import gymnasium
-from gymnasium.utils import seeding
+import gym
+from gym.utils import seeding
 import numpy as np
 from typing import Dict, Any, Tuple
 from ..core.simulatior import AircraftSimulator, BaseSimulator
@@ -7,7 +7,7 @@ from ..tasks.task_base import BaseTask
 from ..utils.utils import parse_config
 
 
-class BaseEnv(gymnasium.Env):
+class BaseEnv(gym.Env):
     """
     A class wrapping the JSBSim flight dynamics module (FDM) for simulating
     aircraft as an RL environment conforming to the OpenAI Gym Env
@@ -35,11 +35,11 @@ class BaseEnv(gymnasium.Env):
         return self.task.num_agents
 
     @property
-    def observation_space(self) -> gymnasium.Space:
+    def observation_space(self) -> gym.Space:
         return self.task.observation_space
 
     @property
-    def action_space(self) -> gymnasium.Space:
+    def action_space(self) -> gym.Space:
         return self.task.action_space
 
     @property
@@ -74,7 +74,7 @@ class BaseEnv(gymnasium.Env):
         self.ego_ids = [uid for uid in self._jsbsims.keys() if uid[0] == _default_team_uid]
         self.enm_ids = [uid for uid in self._jsbsims.keys() if uid[0] != _default_team_uid]
 
-        # Link jsbsims
+        # Link jsbsims, define allies and enemies for each AircraftSimulator
         for key, sim in self._jsbsims.items():
             for k, s in self._jsbsims.items():
                 if k == key:
@@ -130,8 +130,10 @@ class BaseEnv(gymnasium.Env):
             self.agents[agent_id].set_property_values(self.task.action_var, a_action)
         # run simulation
         for _ in range(self.agent_interaction_steps):
+            # aircraft simulations
             for sim in self._jsbsims.values():
                 sim.run()
+            # missile simulations
             for sim in self._tempsims.values():
                 sim.run()
         self.task.step(self)

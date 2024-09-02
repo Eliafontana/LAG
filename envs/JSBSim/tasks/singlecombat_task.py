@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-from gymnasium import spaces
+from gym import spaces
 from typing import Literal
 from .task_base import BaseTask
 from ..core.simulatior import AircraftSimulator
@@ -122,7 +122,7 @@ class SingleCombatTask(BaseTask):
         norm_obs[8] = ego_obs_list[12] / 340            # 8. ego vc   (unit: mh)
         # (2) relative info w.r.t enm state
         ego_AO, ego_TA, R, side_flag = get2d_AO_TA_R(ego_feature, enm_feature, return_side=True)
-        norm_obs[9] = (enm_obs_list[9] - ego_obs_list[9]) / 340
+        norm_obs[9] = (enm_obs_list[9] - ego_obs_list[9]) / 340 # how fast aircrafts are approaching each others
         norm_obs[10] = (enm_obs_list[2] - ego_obs_list[2]) / 1000
         norm_obs[11] = ego_AO
         norm_obs[12] = ego_TA
